@@ -1,0 +1,227 @@
+/* ==================== RESET & BASE ==================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #F7F4F0;
+  min-height: 100vh;
+}
+
+/* ==================== BANNER SECTION ==================== */
+.banner {
+  background: linear-gradient(135deg, #FF6B35, #E85A24);
+  padding: 36px 26px 28px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 160px;
+  height: 160px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.logo-row {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.brand-sub {
+  font-size: 11px;
+  opacity: 0.8;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+.bmsg {
+  font-size: 14px;
+  opacity: 0.88;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+/* ==================== ROLE SELECTION ==================== */
+.role-wrap {
+  background: white;
+  padding: 20px 20px 0;
+}
+
+.rlbl {
+  font-size: 12px;
+  font-weight: 700;
+  color: #aaa;
+  text-align: center;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.rrow {
+  display: flex;
+  gap: 12px;
+}
+
+.rb {
+  flex: 1;
+  border: 2.5px solid #E8E0D8;
+  border-radius: 16px;
+  padding: 16px 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  background: white;
+  transition: 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.rb .ri {
+  font-size: 28px;
+}
+
+.rb .rl {
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+}
+
+.rb .rs {
+  font-size: 11px;
+  color: #aaa;
+  text-align: center;
+}
+
+.rb.on {
+  border-color: #FF6B35;
+  background: #FFF7F4;
+}
+
+.rb.on .rl {
+  color: #FF6B35;
+}
+
+/* ==================== CARD & FORM ==================== */
+.card {
+  background: white;
+  border-top: 1px solid #F0EBE5;
+  padding: 24px 22px 60px;
+}
+
+.card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  margin-bottom: 3px;
+}
+
+.csub {
+  color: #888;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* ==================== FORM FIELDS ==================== */
+.field {
+  margin-bottom: 13px;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.field input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid #E8E0D8;
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  background: #FAFAFA;
+}
+
+.field input:focus {
+  border-color: #FF6B35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+  background: white;
+}
+
+/* ==================== BUTTONS & MESSAGES ==================== */
+.err {
+  background: #FFF0EB;
+  border: 1px solid #FFD0BE;
+  color: #E85A24;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 12px;
+  display: none;
+}
+
+.btn {
+  width: 100%;
+  background: linear-gradient(135deg, #FF6B35, #E85A24);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  margin-top: 4px;
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.35);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.sw {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 13px;
+  color: #888;
+}
+
+.sw a {
+  color: #FF6B35;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ==================== PANELS ==================== */
+.panel {
+  display: none;
+}
+
+.panel.on {
+  display: block;
+}

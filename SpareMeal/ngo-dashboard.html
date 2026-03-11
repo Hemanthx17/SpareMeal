@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>SpareMeal – NGO Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;background:#F0F4F8;padding-bottom:80px;}
+    .hdr{background:linear-gradient(135deg,#1E3A5F,#2D5986);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;}
+    .hl{display:flex;align-items:center;gap:10px;}
+    .hbrand{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:white;}
+    .hsub{color:rgba(255,255,255,.75);font-size:12px;}
+    .hrole{background:rgba(255,255,255,.2);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;}
+    /* Stats row */
+    .stats{display:flex;gap:10px;padding:16px 14px 4px;overflow-x:auto;scrollbar-width:none;}
+    .stats::-webkit-scrollbar{display:none;}
+    .st{flex-shrink:0;background:white;border-radius:14px;padding:12px 16px;min-width:90px;box-shadow:0 3px 14px rgba(0,0,0,.07);text-align:center;}
+    .st .sv{font-size:22px;font-weight:800;} .st .sl{font-size:11px;color:#888;margin-top:2px;}
+    .or .sv{color:#FF6B35;} .gr .sv{color:#22C55E;} .bl .sv{color:#3B82F6;} .gy .sv{color:#6B7280;}
+    /* Filter pills */
+    .fr{display:flex;gap:8px;padding:8px 14px 12px;overflow-x:auto;scrollbar-width:none;}
+    .fr::-webkit-scrollbar{display:none;}
+    .ft{flex-shrink:0;background:white;border:2px solid #E0E7EF;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;color:#888;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.2s;}
+    .ft.on{background:#1E3A5F;border-color:#1E3A5F;color:white;}
+    /* Live badge */
+    .live{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#22C55E;margin-left:6px;vertical-align:middle;}
+    .ldot{width:7px;height:7px;border-radius:50%;background:#22C55E;animation:pulse 1.5s infinite;}
+    @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.5);opacity:.7;}}
+    /* Donation card */
+    .sec{padding:0 14px;}
+    .dc{background:white;border-radius:16px;padding:15px;margin-bottom:12px;box-shadow:0 3px 14px rgba(0,0,0,.07);}
+    .dt{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+    .dt h4{font-size:15px;font-weight:700;color:#1E3A5F;margin-bottom:2px;} .dt p{font-size:12px;color:#888;}
+    .pill{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;flex-shrink:0;margin-left:8px;}
+    .p-pending{background:#FFF3CD;color:#B45309;}
+    .p-accepted{background:#D1FAE5;color:#065F46;}
+    .p-completed{background:#DBEAFE;color:#1D4ED8;}
+    .p-rejected{background:#FEE2E2;color:#B91C1C;}
+    .meta{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px;}
+    .mt{background:#F0F4F8;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:600;color:#555;}
+    .mt span{color:#1E3A5F;}
+    .addr{font-size:12px;color:#666;margin-bottom:10px;line-height:1.5;}
+    .del-b{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:5px 12px;border-radius:10px;margin-bottom:12px;}
+    .del-pu{background:#FFF0EB;color:#FF6B35;} .del-sd{background:#EFF6FF;color:#3B82F6;}
+    .ar{display:flex;gap:8px;}
+    .ab{flex:1;border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:.2s;}
+    .ab-acc{background:#22C55E;color:white;} .ab-acc:hover{background:#16A34A;}
+    .ab-com{background:#3B82F6;color:white;} .ab-com:hover{background:#2563EB;}
+    .ab-rej{background:#F7F4F0;color:#888;border:1.5px solid #E8E0D8;} .ab-rej:hover{background:#FEE2E2;color:#B91C1C;border-color:#B91C1C;}
+    .ab-dis{background:#F0F0F0;color:#bbb;cursor:not-allowed;}
+    .empty{text-align:center;padding:48px 20px;}
+    .empty .ei{font-size:52px;margin-bottom:12px;}
+    .empty h3{font-family:'Playfair Display',serif;font-size:19px;color:#333;margin-bottom:6px;}
+    .empty p{color:#888;font-size:13px;}
+    /* Profile view */
+    .np{display:flex;flex-direction:column;align-items:center;padding:30px 20px 16px;background:linear-gradient(180deg,#EBF1F9,#F0F4F8);}
+    .npa{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1E3A5F,#2D5986);color:white;font-size:32px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:0 8px 22px rgba(30,58,95,.35);}
+    .np h2{font-family:'Playfair Display',serif;font-size:21px;margin-bottom:3px;}
+    .np p{color:#888;font-size:13px;}
+    .nbadge{background:#DBEAFE;color:#1D4ED8;font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;margin:8px 0 16px;display:inline-block;}
+    .ic{background:white;border-radius:16px;margin:0 16px 18px;box-shadow:0 3px 14px rgba(0,0,0,.07);overflow:hidden;}
+    .ir{display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid #E8E0D8;}
+    .ir:last-child{border-bottom:none;}
+    .ir .ico{font-size:20px;flex-shrink:0;}
+    .ir small{display:block;font-size:11px;color:#888;margin-bottom:2px;} .ir p{font-size:14px;font-weight:600;}
+    .btn-so{display:block;width:calc(100% - 32px);margin:0 16px;background:transparent;color:#E85A24;border:2px solid #E85A24;padding:13px;border-radius:14px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;text-align:center;}
+    .btn-so:hover{background:#FFF0EB;}
+    /* Nav */
+    .bnav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #E8E0D8;display:flex;padding:8px 0 12px;z-index:100;}
+    .nb{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:'DM Sans',sans-serif;font-size:11px;color:#888;text-decoration:none;padding:4px 0;}
+    .nb.on,.nb:hover{color:#1E3A5F;} .nb .ni{font-size:20px;}
+    .view{display:none;} .view.on{display:block;}
+  </style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hl">
+    <svg width="36" height="36" viewBox="0 0 56 56" fill="none">
+      <circle cx="28" cy="28" r="27" fill="rgba(255,255,255,.15)" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+      <rect x="13" y="6" width="4" height="11" rx="2" fill="white" opacity=".7"/>
+      <rect x="20" y="3" width="4" height="14" rx="2" fill="white"/>
+      <rect x="28" y="3" width="4" height="14" rx="2" fill="white"/>
+      <rect x="36" y="6" width="4" height="11" rx="2" fill="white" opacity=".7"/>
+      <rect x="7" y="22" width="42" height="8" rx="4" fill="white"/>
+      <path d="M10 30 Q9 44 28 49 Q47 44 46 30 Z" fill="white"/>
+      <rect x="9" y="22" width="38" height="5" rx="2.5" fill="rgba(255,255,255,.3)"/>
+      <ellipse cx="37" cy="38" rx="5.5" ry="3" fill="rgba(255,255,255,.2)" transform="rotate(-15 37 38)"/>
+    </svg>
+    <div><div class="hbrand">SpareMeal</div><div class="hsub" id="ngo-sub">NGO Dashboard</div></div>
+  </div>
+  <span class="hrole">🏢 NGO</span>
+</div>
+
+<!-- DASHBOARD VIEW -->
+<div class="view on" id="v-dash">
+  <div class="stats">
+    <div class="st or"><div class="sv" id="st-p">—</div><div class="sl">Pending</div></div>
+    <div class="st gr"><div class="sv" id="st-a">—</div><div class="sl">Accepted</div></div>
+    <div class="st bl"><div class="sv" id="st-c">—</div><div class="sl">Completed</div></div>
+    <div class="st gy"><div class="sv" id="st-t">—</div><div class="sl">Total</div></div>
+  </div>
+  <div class="fr">
+    <button class="ft on" onclick="setFilter('all',this)">All</button>
+    <button class="ft"    onclick="setFilter('pending',this)">⏳ Pending</button>
+    <button class="ft"    onclick="setFilter('accepted',this)">✅ Accepted</button>
+    <button class="ft"    onclick="setFilter('completed',this)">🎉 Completed</button>
+    <button class="ft"    onclick="setFilter('Pick-Up',this)">📦 Pick-Up</button>
+    <button class="ft"    onclick="setFilter('Self Delivery',this)">🛵 Self Delivery</button>
+  </div>
+  <div class="sec">
+    <p style="font-size:12px;color:#888;margin-bottom:12px;">
+      Incoming Donations <span class="live"><span class="ldot"></span>Live</span>
+    </p>
+    <div id="don-list">
+      <p style="color:#aaa;text-align:center;padding:24px;font-size:13px;">Connecting…</p>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE VIEW -->
+<div class="view" id="v-prof">
+  <div class="np">
+    <div class="npa" id="np-av"></div>
+    <h2 id="np-nm"></h2>
+    <p id="np-us"></p>
+    <span class="nbadge">🏢 Verified NGO Partner</span>
+  </div>
+  <div class="ic">
+    <div class="ir"><span class="ico">🏢</span><div><small>NGO Name</small><p id="pr-nm"></p></div></div>
+    <div class="ir"><span class="ico">👤</span><div><small>Username</small><p id="pr-us"></p></div></div>
+    <div class="ir"><span class="ico">🎭</span><div><small>Role</small><p>Pre-registered NGO Partner</p></div></div>
+  </div>
+  <button class="btn-so" onclick="signOut()">Sign Out</button>
+</div>
+
+<nav class="bnav">
+  <a href="#" class="nb on" id="nb-d" onclick="showView('v-dash');return false;"><span class="ni">📋</span>Donations</a>
+  <a href="#" class="nb"    id="nb-p" onclick="showView('v-prof');return false;"><span class="ni">🏢</span>Profile</a>
+</nav>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+  if (getSession('role') !== 'ngo') { location.href = 'index.html'; }
+
+  var myId   = getSession('ngo_id');
+  var myName = getSession('cn') || 'NGO';
+  var myUser = getSession('cu');
+  var allDons   = [];
+  var curFilter = 'all';
+
+  // Fill profile fields
+  document.getElementById('ngo-sub').textContent = myName;
+  document.getElementById('np-av').textContent   = myName.charAt(0).toUpperCase();
+  document.getElementById('np-nm').textContent   = myName;
+  document.getElementById('np-us').textContent   = '@' + myUser;
+  document.getElementById('pr-nm').textContent   = myName;
+  document.getElementById('pr-us').textContent   = myUser;
+
+  // ── Real-time listener (no orderBy — avoids needing composite index) ──
+  DONATIONS
+    .where('ngoId', '==', myId)
+    .onSnapshot(
+      function(snap) {
+        allDons = [];
+        snap.forEach(function(doc) {
+          allDons.push(Object.assign({ id: doc.id }, doc.data()));
+        });
+        allDons = sortByDate(allDons); // sort newest first, client-side
+        renderList();
+      },
+      function(err) {
+        console.error('Firestore error:', err);
+        document.getElementById('don-list').innerHTML =
+          '<div class="empty"><p>⚠️ Error: ' + err.message + '</p></div>';
+      }
+    );
+
+  function renderList() {
+    var shown = allDons.filter(function(d) {
+      if (curFilter === 'all')           return true;
+      if (curFilter === 'Pick-Up')       return d.delivery === 'Pick-Up';
+      if (curFilter === 'Self Delivery') return d.delivery === 'Self Delivery';
+      return d.status === curFilter;
+    });
+
+    // Update stat counters
+    document.getElementById('st-p').textContent = allDons.filter(function(d){ return d.status === 'pending';   }).length;
+    document.getElementById('st-a').textContent = allDons.filter(function(d){ return d.status === 'accepted';  }).length;
+    document.getElementById('st-c').textContent = allDons.filter(function(d){ return d.status === 'completed'; }).length;
+    document.getElementById('st-t').textContent = allDons.length;
+
+    var el = document.getElementById('don-list');
+
+    if (shown.length === 0) {
+      el.innerHTML = '<div class="empty"><div class="ei">📭</div><h3>No donations yet</h3><p>Nothing matches this filter.</p></div>';
+      return;
+    }
+
+    el.innerHTML = shown.map(function(d) {
+      var pCls = 'p-' + d.status;
+      var pTxt = d.status.charAt(0).toUpperCase() + d.status.slice(1);
+      var dCls = d.delivery === 'Pick-Up' ? 'del-pu' : 'del-sd';
+      var dIco = d.delivery === 'Pick-Up' ? '📦' : '🛵';
+      var dateInfo = d.pickupDate
+        ? '📅 ' + d.pickupDate + (d.pickupTime ? ' at ' + d.pickupTime : '')
+        : '';
+      var hrsInfo = d.hrsAgo > 0 ? ' · 🕐 ' + d.hrsAgo + ' hrs ago' : '';
+
+      // Action buttons based on status
+      var btns = '';
+      if (d.status === 'pending') {
+        btns =
+          '<button class="ab ab-acc" onclick="upd(\''+d.id+'\',\'accepted\')">✓ Accept</button>' +
+          '<button class="ab ab-rej" onclick="upd(\''+d.id+'\',\'rejected\')">✕ Reject</button>';
+      } else if (d.status === 'accepted') {
+        btns =
+          '<button class="ab ab-com" onclick="upd(\''+d.id+'\',\'completed\')">🎉 Mark Complete</button>' +
+          '<button class="ab ab-dis" disabled>Accepted ✓</button>';
+      } else {
+        btns = '<button class="ab ab-dis" disabled>' +
+          (d.status === 'completed' ? '✓ Completed' : '✕ Rejected') + '</button>';
+      }
+
+      return '<div class="dc">' +
+        '<div class="dt">' +
+          '<div><h4>' + d.donorName + '</h4>' +
+          '<p>#' + d.id.slice(-6) + ' · ' + (d.pickupDate || 'No date') + '</p></div>' +
+          '<span class="pill ' + pCls + '">' + pTxt + '</span>' +
+        '</div>' +
+        '<div class="meta">' +
+          '<div class="mt">🥗 <span>' + d.category + '</span></div>' +
+          '<div class="mt">🍽 <span>' + d.meal + '</span></div>' +
+          '<div class="mt">👥 <span>' + d.qty + ' persons</span></div>' +
+          '<div class="mt">📞 <span>' + d.phone + '</span></div>' +
+          (dateInfo ? '<div class="mt">' + dateInfo + hrsInfo + '</div>' : '') +
+        '</div>' +
+        '<div class="addr">📍 ' + d.addr + '</div>' +
+        '<span class="del-b ' + dCls + '">' + dIco + ' ' + d.delivery + '</span>' +
+        '<div class="ar">' + btns + '</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  // Update donation status in Firestore — onSnapshot auto-refreshes the UI
+  function upd(id, status) {
+    DONATIONS.doc(id).update({ status: status })
+      .catch(function(e) {
+        alert('Could not update: ' + e.message);
+        console.error(e);
+      });
+  }
+
+  function setFilter(f, btn) {
+    curFilter = f;
+    document.querySelectorAll('.ft').forEach(function(b){ b.classList.remove('on'); });
+    btn.classList.add('on');
+    renderList();
+  }
+
+  function showView(id) {
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('on'); });
+    document.getElementById(id).classList.add('on');
+    document.getElementById('nb-d').classList.toggle('on', id === 'v-dash');
+    document.getElementById('nb-p').classList.toggle('on', id === 'v-prof');
+  }
+
+  function signOut() { clearSession(); location.href = 'index.html'; }
+</script>
+</body>
+</html>
