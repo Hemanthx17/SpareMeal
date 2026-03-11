@@ -6,12 +6,14 @@
 // ══════════════════════════════════════════
 
 var firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+  apiKey:            "AIzaSyCtOFnwjIqU7sPt0Q3JHeldbrkNH8LolMI",
+  authDomain:        "sparemeal-ade47.firebaseapp.com",
+  databaseURL:       "https://sparemeal-ade47-default-rtdb.firebaseio.com",
+  projectId:         "sparemeal-ade47",
+  storageBucket:     "sparemeal-ade47.firebasestorage.app",
+  messagingSenderId: "202714263862",
+  appId:             "1:202714263862:web:5d731cb813ac560cdcc397",
+  measurementId:     "G-JT5HCNSX1N"
 };
 
 // Init only once
