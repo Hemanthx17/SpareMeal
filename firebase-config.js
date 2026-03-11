@@ -13,6 +13,8 @@ var firebaseConfig = {
   storageBucket:     "sparemeal-ade47.firebasestorage.app",
   messagingSenderId: "202714263862",
   appId:             "1:202714263862:web:5d731cb813ac560cdcc397",
+  measurementId:     "G-JT5HCNSX1N2",
+  appId:             "1:202714263862:web:5d731cb813ac560cdcc397",
   measurementId:     "G-JT5HCNSX1N"
 };
 
