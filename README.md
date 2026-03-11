@@ -1,4 +1,4 @@
-# 🍽️ SpareMeal
+#  SpareMeal
 
 **A College Project | Share Food. Spread Hope.**
 
