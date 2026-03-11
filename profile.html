@@ -90,7 +90,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script>
-  if (getSession('role') !== 'donor') { location.href = 'login.html'; }
+  if (getSession('role') !== 'donor') { location.href = 'index.html'; }
 
   var cu = getSession('cu');
   var cn = getSession('cn') || 'Friend';
@@ -182,7 +182,7 @@
       }
     );
 
-  function signOut() { clearSession(); location.href = 'login.html'; }
+  function signOut() { clearSession(); location.href = 'index.html'; }
 </script>
 </body>
 </html>

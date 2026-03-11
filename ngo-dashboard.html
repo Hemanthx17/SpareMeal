@@ -145,7 +145,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script>
-  if (getSession('role') !== 'ngo') { location.href = 'login.html'; }
+  if (getSession('role') !== 'ngo') { location.href = 'index.html'; }
 
   var myId   = getSession('ngo_id');
   var myName = getSession('cn') || 'NGO';
@@ -269,7 +269,7 @@
     document.getElementById('nb-p').classList.toggle('on', id === 'v-prof');
   }
 
-  function signOut() { clearSession(); location.href = 'login.html'; }
+  function signOut() { clearSession(); location.href = 'index.html'; }
 </script>
 </body>
 </html>
